@@ -1,15 +1,56 @@
 version: '2'
 services:
-    wordpress:
-      image: wordpress
+    apache-proxy:
+      image: mannionjames/docker-digital-ocean-apache
+      ports:
+        - "80:80"
+
+    mannionjames-wordpress:
+      image: mannionjames/docker-wordpress
       restart: always
       links:
-        - db:mysql
+        - mannionjames-db:mysql
       environment:
-        WORDPRESS_DB_HOST: db:3306
-        WORDPRESS_DB_PASSWORD: spiderpig
-    db:
-      image: mariadb
+        WORDPRESS_DB_NAME: dsAA4GkcEBuR3PgHR9xF
+        WORDPRESS_DB_HOST: mannionjames-db:3306
+        WORDPRESS_DB_USER: KNxvYF9UJk5skx9V3gVl
+        WORDPRESS_DB_PASSWORD: L=F(+BH)}~1*.42Kc|9s-_aJK<_7w<J
+    mannionjames-db:
+      image: mariadb:latest
       restart: always
+      volumes_from:
+        - mannionjames-data
       environment:
-        MYSQL_ROOT_PASSWORD: spiderpig
+        MYSQL_DATABASE: dsAA4GkcEBuR3PgHR9xF
+        MYSQL_USER: KNxvYF9UJk5skx9V3gVl
+        MYSQL_PASSWORD: L=F(+BH)}~1*.42Kc|9s-_aJK<_7w<J
+        MYSQL_ROOT_PASSWORD: <>F(+Bp)}~0*.76£wo|2s-_aPK<_6w<K
+    mannionjames-data:
+      image: mannionjames/mannionjames-maria-data:latest
+
+    neverwearswhite-wordpress:
+      image: wordpress:latest
+      restart: always
+      volumes_from:
+        - neverwearswhite-content
+      links:
+        - neverwearswhite-db:mysql
+      environment:
+        WORDPRESS_DB_NAME: dsAA4GkcEBuR3PgHR9xF
+        WORDPRESS_DB_HOST: neverwearswhite-db:3306
+        WORDPRESS_DB_USER: KNxvYF9UJk5skx9V3gVl
+        WORDPRESS_DB_PASSWORD: L=F(+BH)}~1*.42Kc|9s-_aJK<_7w<J
+    neverwearswhite-content:
+      image: mannionjames/mannionjames-wp-content:latest
+    neverwearswhite-db:
+      image: mariadb:latest
+      restart: always
+      volumes_from:
+        - neverwearswhite-data
+      environment:
+        MYSQL_DATABASE: dsAA4GkcEBuR3PgHR9xF
+        MYSQL_USER: KNxvYF9UJk5skx9V3gVl
+        MYSQL_PASSWORD: L=F(+BH)}~1*.42Kc|9s-_aJK<_7w<J
+        MYSQL_ROOT_PASSWORD: <>F(+Bp)}~0*.76£wo|2s-_aPK<_6w<K
+    neverwearswhite-data:
+      image: mannionjames/mannionjames-maria-data:latest
