@@ -2,9 +2,9 @@ version: '2'
 services:
     apache-proxy:
       image: mannionjames/docker-digital-ocean-apache
+      restart: always
       ports:
         - "80:80"
-
     wordpress:
       image: mannionjames/docker-wordpress
       restart: always
